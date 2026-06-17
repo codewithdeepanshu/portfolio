@@ -4,7 +4,7 @@ import {
   MapPin, ExternalLink, Briefcase, Code, User, 
   Send, CheckCircle, AlertCircle, Terminal, 
   Database, Layers, Cpu, Heart, Award, BookOpen, Phone,
-  Settings, Bot, TrendingUp, Sparkles, Check, Workflow, Palette
+  Settings, Bot, TrendingUp, Sparkles, Check, Workflow, Palette, MessageSquare
 } from 'lucide-react';
 // Dynamic backend URL configuration (defaults to local Django for dev, configurable via environment variable in production)
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
@@ -234,6 +234,40 @@ const BRIEF_BUDGETS = [
   "$3,000+"
 ];
 
+const getLocalAIResponse = (userMsg) => {
+  const msg = userMsg.toLowerCase();
+  
+  if (msg.includes('project') || msg.includes('final year')) {
+    return "Deepanshu has built several key projects:\n\n1. **AI Twitter/X Sentiment Analyzer**: A full-stack web app using Flask and PyTorch (RoBERTa model) to analyze sentiment of X timelines.\n2. **Social Media Content Analyzer**: A Streamlit dashboard using Pandas & NumPy to visualize performance.\n3. **Autonomous AI Agent Workflow Engine**: Built using LangChain and Flask to run multi-agent workflows.\n4. **Portfolio Website**: This responsive website with a Django REST CRM backend (this website!).";
+  }
+  
+  if (msg.includes('skill') || msg.includes('tech') || msg.includes('language') || msg.includes('code')) {
+    return "Deepanshu's core skills include:\n\n* **Languages**: Python, Java, C++, SQL, JavaScript\n* **Frameworks**: Django, Flask, FastAPI, Streamlit, React.js\n* **AI/ML**: LangChain, CrewAI, PyTorch, Hugging Face Transformers, NumPy, Pandas\n* **Databases**: MySQL, SQL Server, PostgreSQL, SQLite";
+  }
+
+  if (msg.includes('contact') || msg.includes('email') || msg.includes('phone') || msg.includes('reach') || msg.includes('hire') || msg.includes('whatsapp')) {
+    return "You can contact Deepanshu directly through:\n\n* **Email**: Deepanshugautam9899@gmail.com\n* **Phone/WhatsApp**: +91 8882440354\n* **Location**: Ghaziabad, Delhi NCR, India\n\nYou can also use the Project Brief form at the bottom of the page to submit your details directly to his CRM!";
+  }
+
+  if (msg.includes('education') || msg.includes('mca') || msg.includes('bca') || msg.includes('college') || msg.includes('degree')) {
+    return "Deepanshu is pursuing:\n\n* **MCA (Master of Computer Applications)** at Institute of Engineering and Technology (IET), Lucknow (2024-2026), currently maintaining a CGPA of 8.43.\n* **BCA (Bachelor of Computer Applications)** from IME Ghaziabad (2020-2023) with a first-class percentage of 69.56%.";
+  }
+
+  if (msg.includes('zenos') || msg.includes('partner') || msg.includes('designer') || msg.includes('collaborate') || msg.includes('ravinder')) {
+    return "Deepanshu collaborates closely with **Zenos Bisht** (Ravinder Bisht), a talented Graphic & UI/UX Designer. Together, they operate as a duo team to provide end-to-end branding, premium designs, and clean fully functional development for clients. Check out Zenos' Behance link in the 'Design Partner' section!";
+  }
+
+  if (msg.includes('certif') || msg.includes('achieve') || msg.includes('hackathon')) {
+    return "Deepanshu holds several achievements:\n\n* **AI Agent Architect Certification**: Professional credential in building autonomous LLM workflows.\n* **Smart India Hackathon 2025**: National-level developer participant.\n* **Data Analysis with Python**: Certified by IBM SkillsBuild.";
+  }
+
+  if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey') || msg.includes('greet')) {
+    return "Hello! I am Deepanshu's AI Agent. I can help answer queries about his projects, skills, certifications, and availability. How can I assist you today?";
+  }
+
+  return "I'm Deepanshu's AI Assistant! I can tell you all about his software development skills, autonomous AI Agent architecture, education, and projects. Feel free to ask about his 'projects', 'skills', 'education', or 'how to contact him'!";
+};
+
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [roleIndex, setRoleIndex] = useState(0);
@@ -253,6 +287,53 @@ function App() {
     subject: '',
     message: ''
   });
+
+  // AI Chatbot Widget States
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState([
+    { sender: 'bot', text: "Hi! I'm Deepanshu's AI Agent. How can I help you today? Ask me about my projects, skills, or contact info!" }
+  ]);
+  const [chatInput, setChatInput] = useState('');
+  const [chatIsTyping, setChatIsTyping] = useState(false);
+
+  const handleSendChatMessage = async (e) => {
+    if (e) e.preventDefault();
+    if (!chatInput.trim()) return;
+
+    const userText = chatInput;
+    setChatMessages(prev => [...prev, { sender: 'user', text: userText }]);
+    setChatInput('');
+    setChatIsTyping(true);
+
+    // Simulate typing delay
+    setTimeout(async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/chat/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: userText }),
+        });
+
+        const data = await response.json();
+        
+        if (response.ok && data.reply && !data.fallback) {
+          setChatMessages(prev => [...prev, { sender: 'bot', text: data.reply }]);
+        } else {
+          // If backend returns fallback = true or fails, use local engine
+          const localReply = getLocalAIResponse(userText);
+          setChatMessages(prev => [...prev, { sender: 'bot', text: localReply }]);
+        }
+      } catch (err) {
+        console.error("Chat API connection error, falling back to client engine: ", err);
+        const localReply = getLocalAIResponse(userText);
+        setChatMessages(prev => [...prev, { sender: 'bot', text: localReply }]);
+      } finally {
+        setChatIsTyping(false);
+      }
+    }, 800);
+  };
 
   // Contact Form Status State
   const [formStatus, setFormStatus] = useState({
@@ -1032,6 +1113,97 @@ function App() {
           </p>
         </div>
       </footer>
+
+      {/* FLOATING AI AGENT CHATBOT */}
+      <div className="chatbot-container">
+        {/* Chat Button */}
+        <button 
+          className={`chatbot-btn ${isChatOpen ? 'active' : ''}`} 
+          onClick={() => setIsChatOpen(!isChatOpen)}
+          aria-label="Toggle Chatbot"
+        >
+          {isChatOpen ? <X size={24} /> : <MessageSquare size={24} />}
+          {!isChatOpen && <span className="chatbot-pulse"></span>}
+        </button>
+
+        {/* Chat Window */}
+        {isChatOpen && (
+          <div className="chatbot-window glass-panel">
+            <div className="chatbot-header">
+              <div className="chatbot-header-info">
+                <div className="chatbot-header-avatar">
+                  <Bot size={20} />
+                </div>
+                <div>
+                  <h4 className="chatbot-header-name">Deepanshu's AI Agent</h4>
+                  <span className="chatbot-header-status">Online & Ready</span>
+                </div>
+              </div>
+              <button className="chatbot-close-btn" onClick={() => setIsChatOpen(false)}>
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="chatbot-messages">
+              {chatMessages.map((msg, index) => (
+                <div key={index} className={`chat-bubble-wrapper ${msg.sender === 'user' ? 'user-wrapper' : 'bot-wrapper'}`}>
+                  {msg.sender === 'bot' && (
+                    <div className="chat-bubble-avatar">
+                      <Bot size={14} />
+                    </div>
+                  )}
+                  <div className={`chat-bubble ${msg.sender === 'user' ? 'user-bubble' : 'bot-bubble'}`}>
+                    {msg.text.split('\n').map((line, lidx) => (
+                      <p key={lidx} style={{ margin: 0, minHeight: line === '' ? '10px' : 'auto' }}>
+                        {line}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              {chatIsTyping && (
+                <div className="chat-bubble-wrapper bot-wrapper">
+                  <div className="chat-bubble-avatar">
+                    <Bot size={14} />
+                  </div>
+                  <div className="chat-bubble bot-bubble typing-bubble">
+                    <span className="typing-dot"></span>
+                    <span className="typing-dot"></span>
+                    <span className="typing-dot"></span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Quick Questions Pills */}
+            <div className="chatbot-quick-queries">
+              <button className="quick-query-btn" onClick={() => { setChatInput("Tell me about your projects"); setTimeout(() => document.getElementById("chat-submit-btn")?.click(), 100); }}>
+                Projects
+              </button>
+              <button className="quick-query-btn" onClick={() => { setChatInput("What are your core skills?"); setTimeout(() => document.getElementById("chat-submit-btn")?.click(), 100); }}>
+                Skills
+              </button>
+              <button className="quick-query-btn" onClick={() => { setChatInput("How can I hire or contact you?"); setTimeout(() => document.getElementById("chat-submit-btn")?.click(), 100); }}>
+                Contact Info
+              </button>
+            </div>
+
+            {/* Chat Input form */}
+            <form onSubmit={handleSendChatMessage} className="chatbot-input-form">
+              <input 
+                type="text" 
+                placeholder="Ask me something..."
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                disabled={chatIsTyping}
+              />
+              <button type="submit" id="chat-submit-btn" className="chatbot-send-btn" disabled={!chatInput.trim() || chatIsTyping}>
+                <Send size={16} />
+              </button>
+            </form>
+          </div>
+        )}
+      </div>
     </>
   );
 }
