@@ -1,0 +1,35 @@
+# Dependency directories
+node_modules/
+**/node_modules/
+venv/
+**/venv/
+env/
+**/env/
+
+# Build outputs
+dist/
+**/dist/
+build/
+**/build/
+
+# Local databases & configurations
+*.sqlite3
+.env
+.env.local
+.env.*.local
+
+# Python caches
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+
+# IDE and system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
