@@ -114,8 +114,8 @@ const PROJECTS_DATA = [
     description: "Designed and built an AI Agent system that orchestrates model calls, performs Web Tool search queries, parses responses, and automatically generates structured database schemas. Leveraged LangChain for agentic memory, function calling for secure tool execution, and Flask for routing.",
     tech: ["Python", "LangChain", "OpenAI API", "Tool Calling", "Flask", "SQLite"],
     category: "ai",
-    github: "https://github.com",
-    live: "https://example.com"
+    github: "https://github.com/codewithdeepanshu",
+    live: "https://portfolio-ilawetkb2-codewithdeepanshu-4995s-projects.vercel.app/"
   },
   {
     id: 2,
@@ -123,8 +123,8 @@ const PROJECTS_DATA = [
     description: "Developed a full-stack web application utilizing Flask for the backend server and vanilla JavaScript for the client interface. Integrated a RoBERTa-based deep learning transformer model (cardiffnlp/twitter-roberta-base-sentiment-latest) via PyTorch to execute 3-class sentiment classification on over 124 million parameters. Designed interactive data visualization charts representing live user sentiment metrics.",
     tech: ["Python", "Flask", "PyTorch", "Hugging Face", "JavaScript", "Tweepy API"],
     category: "fullstack",
-    github: "https://github.com",
-    live: "https://example.com"
+    github: "https://github.com/codewithdeepanshu/twitter-sentiment-analysis-",
+    live: "https://huggingface.co/spaces/deepanshugautam/twitter-sentiment-analysis"
   },
   {
     id: 3,
@@ -132,8 +132,8 @@ const PROJECTS_DATA = [
     description: "Engineered a responsive web dashboard in Streamlit to aggregate, clean, and visualize content performance indicators and text files. Utilized Pandas and NumPy data pipelines for structural data cleaning, trend sorting, and sentiment scoring across CSV datasets.",
     tech: ["Python", "Streamlit", "Pandas", "NumPy", "Matplotlib"],
     category: "backend",
-    github: "https://github.com",
-    live: "https://example.com"
+    github: "https://github.com/2400520140023-arch/social-media-content-analyzer",
+    live: "https://social-media-content-analyzer-ffqt8dgzr5pfoq8clmtynf.streamlit.app/"
   },
   {
     id: 4,
@@ -141,8 +141,8 @@ const PROJECTS_DATA = [
     description: "Built a full-stack e-commerce bookstore leveraging Django's Model-View-Template (MVT) architecture with secure session-based authentication. Designed database schemas in MySQL, writing optimized SQL queries to manage products, order carts, and relational transaction data.",
     tech: ["Django", "MySQL", "SQL", "Bootstrap", "HTML5/CSS3"],
     category: "fullstack",
-    github: "https://github.com",
-    live: "https://example.com"
+    github: "https://github.com/codewithdeepanshu",
+    live: "https://portfolio-ilawetkb2-codewithdeepanshu-4995s-projects.vercel.app/"
   }
 ];
 
@@ -180,27 +180,32 @@ const ACHIEVEMENTS_DATA = [
     title: "AI Agent Architect Certification",
     issuer: "Professional Certificate",
     period: "Credentials Achieved",
-    description: "Demonstrated skills in creating, evaluating, and fine-tuning advanced autonomous AI agents and automated workflows."
+    description: "Demonstrated skills in creating, evaluating, and fine-tuning advanced autonomous AI agents and automated workflows.",
+    link: "https://drive.google.com/file/d/1TZLcu5zlE8hEpIG-yJTHOieZiZTQ9n1H/view"
   },
   {
     title: "Smart India Hackathon 2025",
     issuer: "National Level Hackathon Participant",
     period: "2025",
-    description: "Collaborated in a development team to solve national challenges, coding functional prototypes under strict deadlines."
+    description: "Collaborated in a development team to solve national challenges, coding functional prototypes under strict deadlines.",
+    link: "https://drive.google.com/file/d/1yLpPykj2jTjcmCOhnXzR7QaNlVJ4S_S2/view"
   },
   {
     title: "Data Analysis with Python",
     issuer: "IBM SkillsBuild",
     period: "Credentials Achieved",
-    description: "Mastered python data libraries (NumPy, Pandas) to perform cleaning, exploratory analysis, and visualization."
+    description: "Mastered python data libraries (NumPy, Pandas) to perform cleaning, exploratory analysis, and visualization.",
+    link: "https://courses.skillsbuild.skillsnetwork.site/certificates/ab16bc4d94e34778ac061df40bf3e8ee"
   },
   {
     title: "LeetCode Practice",
     issuer: "Data Structures & Algorithms",
     period: "Ongoing Developer Skill",
-    description: "Actively solving algorithmic and logical problems on LeetCode to refine coding efficacy and space/time complexity optimization."
+    description: "Actively solving algorithmic and logical problems on LeetCode to refine coding efficacy and space/time complexity optimization.",
+    link: "https://leetcode.com/u/deepanshu__gautam/"
   }
 ];
+
 
 // Core Skills Data (Updated with AI Agents)
 const SKILLS_DATA = [
@@ -427,6 +432,7 @@ function App() {
               <a href="#projects" className="nav-link">Projects</a>
               <a href="#collaboration" className="nav-link">Design Partner</a>
               <a href="#journey" className="nav-link">Education & Skills</a>
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="nav-link">Resume</a>
               <a href="#contact" className="nav-link btn btn-secondary nav-cta">Start A Project</a>
             </div>
 
@@ -450,6 +456,7 @@ function App() {
             <a href="#projects" onClick={() => setMobileMenuOpen(false)}>Projects</a>
             <a href="#collaboration" onClick={() => setMobileMenuOpen(false)}>Design Partner</a>
             <a href="#journey" onClick={() => setMobileMenuOpen(false)}>Education & Skills</a>
+            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)}>Resume</a>
             <a href="#contact" className="btn btn-primary" onClick={() => setMobileMenuOpen(false)}>Start A Project</a>
           </div>
         )}
@@ -474,8 +481,8 @@ function App() {
               <a href="#contact" className="btn btn-primary">
                 Hire Me / Start Project <ArrowRight size={18} />
               </a>
-              <a href="#services" className="btn btn-secondary">
-                View My Services
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+                Download Resume <ExternalLink size={16} />
               </a>
             </div>
           </div>
@@ -785,7 +792,28 @@ function App() {
                       <h4 className="timeline-role" style={{ fontSize: '1.1rem' }}>{ach.title}</h4>
                       <h5 className="timeline-company" style={{ fontSize: '0.9rem' }}>{ach.issuer}</h5>
                       <p className="timeline-desc" style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>{ach.description}</p>
+                      {ach.link && (
+                        <a 
+                          href={ach.link} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          style={{ 
+                            display: 'inline-flex', 
+                            alignItems: 'center', 
+                            gap: '4px', 
+                            marginTop: '0.75rem', 
+                            fontSize: '0.85rem', 
+                            color: 'var(--color-secondary)', 
+                            textDecoration: 'none',
+                            fontWeight: '500'
+                          }}
+                          className="cert-link"
+                        >
+                          View Credentials <ExternalLink size={12} />
+                        </a>
+                      )}
                     </div>
+
                   </div>
                 ))}
               </div>
@@ -842,13 +870,14 @@ function App() {
               </div>
 
               <div className="contact-socials">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="GitHub Link">
+                <a href="https://github.com/codewithdeepanshu" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="GitHub Link">
                   <GithubIcon size={22} />
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="LinkedIn Link">
+                <a href="https://www.linkedin.com/in/deepanshu-gautam-9b1051240/" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="LinkedIn Link">
                   <LinkedinIcon size={22} />
                 </a>
               </div>
+
             </div>
 
             {/* Direct Contact Form / Interactive Project Brief Generator */}
