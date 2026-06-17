@@ -6,7 +6,8 @@ import {
   Database, Layers, Cpu, Heart, Award, BookOpen, Phone,
   Settings, Bot, TrendingUp, Sparkles, Check, Workflow, Palette
 } from 'lucide-react';
-import './App.css';
+// Dynamic backend URL configuration (defaults to local Django for dev, configurable via environment variable in production)
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
 // Inline SVGs for brand icons to ensure cross-version compatibility
 const GithubIcon = ({ size = 20, ...props }) => (
@@ -350,7 +351,7 @@ function App() {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/contact/', {
+      const response = await fetch(`${API_BASE_URL}/api/contact/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
