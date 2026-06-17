@@ -288,6 +288,13 @@ function App() {
     message: ''
   });
 
+  // Page Routing State
+  const [currentPage, setCurrentPage] = useState('home');
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
   // AI Chatbot Widget States
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState([
@@ -501,20 +508,19 @@ function App() {
       {/* NAVIGATION BAR */}
       <nav className={`navbar ${scrolled ? 'scrolled glass-panel' : ''}`}>
         <div className="container nav-container">
-          <a href="#home" className="nav-logo">
+          <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }} className="nav-logo">
             <span className="logo-icon">&lt;/&gt;</span>
             <span className="logo-text">Deepanshu<span className="text-gradient-cyan">Gautam</span></span>
           </a>
 
           <div className="nav-right-sec">
             <div className="nav-links">
-              <a href="#home" className="nav-link">Home</a>
-              <a href="#services" className="nav-link">Services</a>
-              <a href="#projects" className="nav-link">Projects</a>
-              <a href="#collaboration" className="nav-link">Design Partner</a>
-              <a href="#journey" className="nav-link">Education & Skills</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }} className={`nav-link ${currentPage === 'home' ? 'active' : ''}`}>Home</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('services'); }} className={`nav-link ${currentPage === 'services' ? 'active' : ''}`}>Services</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('projects'); }} className={`nav-link ${currentPage === 'projects' ? 'active' : ''}`}>Projects</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('journey'); }} className={`nav-link ${currentPage === 'journey' ? 'active' : ''}`}>Education & Skills</a>
               <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="nav-link">Resume</a>
-              <a href="#contact" className="nav-link btn btn-secondary nav-cta">Start A Project</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('contact'); }} className={`nav-link btn btn-secondary nav-cta ${currentPage === 'contact' ? 'active' : ''}`}>Start A Project</a>
             </div>
 
             <img src="/profile.png" alt="Deepanshu Gautam" className="nav-avatar" />
@@ -532,52 +538,55 @@ function App() {
         {/* Mobile Menu Panel */}
         {mobileMenuOpen && (
           <div className="mobile-menu glass-panel">
-            <a href="#home" onClick={() => setMobileMenuOpen(false)}>Home</a>
-            <a href="#services" onClick={() => setMobileMenuOpen(false)}>Services</a>
-            <a href="#projects" onClick={() => setMobileMenuOpen(false)}>Projects</a>
-            <a href="#collaboration" onClick={() => setMobileMenuOpen(false)}>Design Partner</a>
-            <a href="#journey" onClick={() => setMobileMenuOpen(false)}>Education & Skills</a>
+            <a href="#" className={currentPage === 'home' ? 'active' : ''} onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setMobileMenuOpen(false); }}>Home</a>
+            <a href="#" className={currentPage === 'services' ? 'active' : ''} onClick={(e) => { e.preventDefault(); setCurrentPage('services'); setMobileMenuOpen(false); }}>Services</a>
+            <a href="#" className={currentPage === 'projects' ? 'active' : ''} onClick={(e) => { e.preventDefault(); setCurrentPage('projects'); setMobileMenuOpen(false); }}>Projects</a>
+            <a href="#" className={currentPage === 'journey' ? 'active' : ''} onClick={(e) => { e.preventDefault(); setCurrentPage('journey'); setMobileMenuOpen(false); }}>Education & Skills</a>
             <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)}>Resume</a>
-            <a href="#contact" className="btn btn-primary" onClick={() => setMobileMenuOpen(false)}>Start A Project</a>
+            <a href="#" className="btn btn-primary" onClick={(e) => { e.preventDefault(); setCurrentPage('contact'); setMobileMenuOpen(false); }}>Start A Project</a>
           </div>
         )}
       </nav>
 
-      {/* HERO SECTION */}
-      <section id="home" className="hero-section">
-        <div className="container hero-container">
-          <div className="hero-content">
-            <span className="hero-greeting glass-panel"><Sparkles size={14} className="text-gradient" style={{ marginRight: '6px' }} /> Available for Freelance Contracts</span>
-            <h1 className="hero-title">
-              Building Scalable <br />
-              <span className="text-gradient typewriter-container">
-                {currentText}
-                <span className="cursor-blink">|</span>
-              </span>
-            </h1>
-            <p className="hero-subtitle">
-              Specializing in the orchestration of **autonomous AI Agents** (using function calling and LLM memory structures), designing highly performant **Django backends**, and building data-driven Streamlit interfaces.
-            </p>
-            <div className="hero-actions">
-              <a href="#contact" className="btn btn-primary">
-                Hire Me / Start Project <ArrowRight size={18} />
-              </a>
-              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
-                Download Resume <ExternalLink size={16} />
-              </a>
-            </div>
-          </div>
+      {/* PAGE WRAPPER WITH MULTI-PAGE ROUTING */}
+      <main className="page-wrapper">
+        {currentPage === 'home' && (
+          <div className="page-transition-fade">
+            {/* HERO SECTION */}
+            <section id="home" className="hero-section">
+              <div className="container hero-container">
+                <div className="hero-content">
+                  <span className="hero-greeting glass-panel"><Sparkles size={14} className="text-gradient" style={{ marginRight: '6px' }} /> Available for Freelance Contracts</span>
+                  <h1 className="hero-title">
+                    Building Scalable <br />
+                    <span className="text-gradient typewriter-container">
+                      {currentText}
+                      <span className="cursor-blink">|</span>
+                    </span>
+                  </h1>
+                  <p className="hero-subtitle">
+                    Specializing in the orchestration of **autonomous AI Agents** (using function calling and LLM memory structures), designing highly performant **Django backends**, and building data-driven Streamlit interfaces.
+                  </p>
+                  <div className="hero-actions">
+                    <button onClick={() => setCurrentPage('contact')} className="btn btn-primary">
+                      Hire Me / Start Project <ArrowRight size={18} />
+                    </button>
+                    <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+                      Download Resume <ExternalLink size={16} />
+                    </a>
+                  </div>
+                </div>
 
-          <div className="hero-visual floating-element">
-            <div className="visual-card glass-panel">
-              <div className="card-header-dots">
-                <span className="dot dot-red"></span>
-                <span className="dot dot-yellow"></span>
-                <span className="dot dot-green"></span>
-              </div>
-              <div className="card-terminal-body">
-                <p className="line-prefix">~ $ <span className="cmd-text">curl -s https://deepanshu.dev/ai-engineer</span></p>
-                <pre className="terminal-code">
+                <div className="hero-visual floating-element">
+                  <div className="visual-card glass-panel">
+                    <div className="card-header-dots">
+                      <span className="dot dot-red"></span>
+                      <span className="dot dot-yellow"></span>
+                      <span className="dot dot-green"></span>
+                    </div>
+                    <div className="card-terminal-body">
+                      <p className="line-prefix">~ $ <span className="cmd-text">curl -s https://deepanshu.dev/ai-engineer</span></p>
+                      <pre className="terminal-code">
 {`{
   "name": "Deepanshu Gautam",
   "status": "Available for AI Agent Builds",
@@ -589,518 +598,578 @@ function App() {
   ],
   "agentStack": ["LangChain", "CrewAI", "VectorDBs", "RAG"]
 }`}
-                </pre>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FREELANCE SERVICES SECTION */}
-      <section id="services" style={{ paddingBottom: '2rem' }}>
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">AI & Backend Services</span>
-            <h2 className="section-title">How I Help Startups & Businesses</h2>
-          </div>
-
-          <div className="services-grid">
-            {SERVICES_DATA.map((srv, idx) => (
-              <div className="service-card glass-card" key={idx}>
-                <div className="service-icon-wrapper">
-                  {srv.icon}
-                </div>
-                <h3 className="service-title">{srv.title}</h3>
-                <p className="service-desc">{srv.desc}</p>
-                <ul className="service-bullets">
-                  {srv.bullets.map((bullet, bidx) => (
-                    <li key={bidx}>{bullet}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FREELANCE BLUEPRINT SECTION */}
-      <section id="blueprint" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">My Framework</span>
-            <h2 className="section-title">Collaborative Agent & API Blueprint</h2>
-          </div>
-          <div className="process-container glass-panel" style={{ borderRadius: '16px' }}>
-            {PROCESS_STEPS.map((step, idx) => (
-              <div className="process-step" key={idx}>
-                <div className="step-num">{step.step}</div>
-                <h4 className="process-step-title">{step.title}</h4>
-                <p className="process-step-desc">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CREATIVE PARTNERSHIP SECTION (ZENOS BISHT) */}
-      <section id="collaboration" className="about-section" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">Design Partner</span>
-            <h2 className="section-title">Design & Development Synergy</h2>
-          </div>
-
-          <div className="about-grid">
-            <div className="about-bio-card glass-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <div className="bio-icon-wrapper">
-                <Workflow size={32} className="bio-icon" />
-              </div>
-              <h3 className="card-heading">Duo Agency Capability</h3>
-              <p className="bio-paragraph">
-                Startups often struggle with the friction between visual UI designers and software backend engineers. We eliminate that gap completely.
-              </p>
-              <p className="bio-paragraph">
-                By teaming up directly with a highly skilled graphic designer, we deliver a unified pipeline: Zenos creates stunning branding, layouts, and assets, which I directly transition into clean, optimized React interfaces and Django REST backend code.
-              </p>
-            </div>
-
-            <div className="about-bio-card glass-card">
-              <div className="bio-icon-wrapper" style={{ borderColor: 'var(--border-cyan-glow)', background: 'rgba(6, 182, 212, 0.1)' }}>
-                <Palette size={32} className="bio-icon" style={{ color: 'var(--color-secondary)' }} />
-              </div>
-              <h3 className="card-heading">{PARTNER_DATA.name}</h3>
-              <h4 className="timeline-company" style={{ marginTop: '-0.75rem', marginBottom: '1rem', color: 'var(--color-secondary)' }}>{PARTNER_DATA.role}</h4>
-              <p className="bio-paragraph" style={{ fontSize: '0.95rem' }}>
-                {PARTNER_DATA.description}
-              </p>
-              <div className="about-details" style={{ marginTop: '1.5rem' }}>
-                <div className="brief-pills-container" style={{ marginBottom: '1.5rem' }}>
-                  {PARTNER_DATA.skills.map((skill, idx) => (
-                    <span className="tech-badge" key={idx} style={{ padding: '0.35rem 0.75rem', borderRadius: '12px' }}>{skill}</span>
-                  ))}
-                </div>
-                <a 
-                  href={PARTNER_DATA.behance} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="btn btn-secondary"
-                  style={{ gap: '0.5rem', width: 'fit-content' }}
-                >
-                  Explore Behance Portfolio <ExternalLink size={16} />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ABOUT & SKILLS SECTION */}
-      <section id="about" className="about-section" style={{ paddingTop: '2rem' }}>
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">Technical Profile</span>
-            <h2 className="section-title">My Background & Core Skills</h2>
-          </div>
-
-          <div className="about-grid">
-            <div className="about-bio-card glass-card">
-              <div className="bio-icon-wrapper">
-                <User size={32} className="bio-icon" />
-              </div>
-              <h3 className="card-heading">About Deepanshu</h3>
-              <p className="bio-paragraph">
-                I am a results-driven Python Developer and Certified AI Agent Architect pursuing an MCA with a strong foundation in Software Engineering, Object-Oriented Programming (OOPs), Database Management Systems (DBMS), and Computer Networks (CN).
-              </p>
-              <p className="bio-paragraph">
-                My core strength lies in combining classical backend technologies (like Django REST Framework and relational SQL optimization) with modern intelligence systems (including LangChain autonomous agents, model function-calling, and custom PyTorch sentiment pipelines).
-              </p>
-              <div className="about-details">
-                <div className="detail-item">
-                  <MapPin size={18} className="detail-icon" />
-                  <span>Ghaziabad, Delhi NCR, India</span>
-                </div>
-                <div className="detail-item">
-                  <Mail size={18} className="detail-icon" />
-                  <span>Deepanshugautam9899@gmail.com</span>
-                </div>
-                <div className="detail-item">
-                  <Phone size={18} className="detail-icon" />
-                  <span>+91 8882440354</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="skills-card glass-card">
-              <h3 className="card-heading">Expertise Matrix</h3>
-              <div className="skills-list">
-                {SKILLS_DATA.map((skill, index) => (
-                  <div className="skill-item" key={index}>
-                    <div className="skill-info">
-                      <span className="skill-name-icon">
-                        {skill.icon}
-                        <span className="skill-name">{skill.name}</span>
-                      </span>
-                      <span className="skill-percentage">{skill.level}%</span>
-                    </div>
-                    <div className="skill-bar-bg">
-                      <div 
-                        className="skill-bar-fill" 
-                        style={{ width: `${skill.level}%` }}
-                      ></div>
+                      </pre>
                     </div>
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
+            </section>
 
-      {/* PROJECTS SECTION */}
-      <section id="projects" className="projects-section">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">Portfolio</span>
-            <h2 className="section-title">My Projects & Proof of Work</h2>
-          </div>
-
-          <div className="project-filters">
-            <button 
-              className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
-              onClick={() => setActiveFilter('all')}
-            >
-              All Projects
-            </button>
-            <button 
-              className={`filter-btn ${activeFilter === 'ai' ? 'active' : ''}`}
-              onClick={() => setActiveFilter('ai')}
-            >
-              AI Agents & ML
-            </button>
-            <button 
-              className={`filter-btn ${activeFilter === 'fullstack' ? 'active' : ''}`}
-              onClick={() => setActiveFilter('fullstack')}
-            >
-              Full Stack
-            </button>
-            <button 
-              className={`filter-btn ${activeFilter === 'backend' ? 'active' : ''}`}
-              onClick={() => setActiveFilter('backend')}
-            >
-              Data Science
-            </button>
-          </div>
-
-          <div className="projects-grid">
-            {filteredProjects.map((project) => (
-              <article className="project-card glass-card" key={project.id}>
-                <div className="project-header">
-                  <span className="project-tag-badge">
-                    {project.category === 'ai' ? 'AI Agents' : project.category === 'fullstack' ? 'Full Stack' : 'Data & Backend'}
-                  </span>
-                  <div className="project-links">
-                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="proj-link" aria-label="GitHub Repository">
-                      <GithubIcon size={20} />
-                    </a>
-                    <a href={project.live} target="_blank" rel="noopener noreferrer" className="proj-link" aria-label="Live Demo">
-                      <ExternalLink size={20} />
-                    </a>
+            {/* ABOUT BIO CARD SECTION */}
+            <section className="about-section" style={{ paddingBottom: '3rem' }}>
+              <div className="container">
+                <div className="about-grid" style={{ gridTemplateColumns: '1fr' }}>
+                  <div className="about-bio-card glass-card" style={{ maxWidth: '800px', margin: '0 auto' }}>
+                    <div className="bio-icon-wrapper">
+                      <User size={32} className="bio-icon" />
+                    </div>
+                    <h3 className="card-heading">About Deepanshu</h3>
+                    <p className="bio-paragraph">
+                      I am a results-driven Python Developer and Certified AI Agent Architect pursuing an MCA with a strong foundation in Software Engineering, Object-Oriented Programming (OOPs), Database Management Systems (DBMS), and Computer Networks (CN).
+                    </p>
+                    <p className="bio-paragraph">
+                      My core strength lies in combining classical backend technologies (like Django REST Framework and relational SQL optimization) with modern intelligence systems (including LangChain autonomous agents, model function-calling, and custom PyTorch sentiment pipelines).
+                    </p>
+                    <div className="about-details" style={{ marginTop: '2rem' }}>
+                      <div className="detail-item">
+                        <MapPin size={18} className="detail-icon" />
+                        <span>Ghaziabad, Delhi NCR, India</span>
+                      </div>
+                      <div className="detail-item">
+                        <Mail size={18} className="detail-icon" />
+                        <span>Deepanshugautam9899@gmail.com</span>
+                      </div>
+                      <div className="detail-item">
+                        <Phone size={18} className="detail-icon" />
+                        <span>+91 8882440354</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <h3 className="project-title">{project.title}</h3>
-                <p className="project-desc">{project.description}</p>
-                <div className="project-tech-stack">
-                  {project.tech.map((t, idx) => (
-                    <span className="tech-badge" key={idx}>{t}</span>
+              </div>
+            </section>
+
+            {/* QUICK NAVIGATION DASHBOARD GRID */}
+            <section className="dashboard-section" style={{ paddingBottom: '6rem' }}>
+              <div className="container">
+                <div className="section-header">
+                  <span className="section-tag">Navigation Dashboard</span>
+                  <h2 className="section-title">Explore My Profile Sections</h2>
+                </div>
+                <div className="dashboard-grid">
+                  <div className="dashboard-card glass-card" onClick={() => setCurrentPage('projects')}>
+                    <div className="dash-icon-box"><Code size={24} className="text-gradient" /></div>
+                    <h3 className="dash-card-title">Projects Showcase</h3>
+                    <p className="dash-card-desc">Inspect my proof-of-work, including sentiment analytics, AI Agent workflow engines, and backend databases.</p>
+                    <span className="dash-card-link">Explore Projects <ArrowRight size={14} /></span>
+                  </div>
+
+                  <div className="dashboard-card glass-card" onClick={() => setCurrentPage('services')}>
+                    <div className="dash-icon-box"><Cpu size={24} className="text-gradient-cyan" /></div>
+                    <h3 className="dash-card-title">Services & Synergy</h3>
+                    <p className="dash-card-desc">See how I build scalable Django APIs, Streamlit dashboards, and collaborate with Zenos Bisht for UX design.</p>
+                    <span className="dash-card-link">View Services <ArrowRight size={14} /></span>
+                  </div>
+
+                  <div className="dashboard-card glass-card" onClick={() => setCurrentPage('journey')}>
+                    <div className="dash-icon-box"><Award size={24} className="text-gradient" /></div>
+                    <h3 className="dash-card-title">Education & Skills</h3>
+                    <p className="dash-card-desc">Inspect my MCA academics, LeetCode solving progress, IBM credentials, and interactive skills matrix.</p>
+                    <span className="dash-card-link">See Journey <ArrowRight size={14} /></span>
+                  </div>
+
+                  <div className="dashboard-card glass-card" onClick={() => setCurrentPage('contact')}>
+                    <div className="dash-icon-box"><Send size={24} className="text-gradient-cyan" /></div>
+                    <h3 className="dash-card-title">Start Project Brief</h3>
+                    <p className="dash-card-desc">Fill out an interactive request questionnaire selecting services and budget ranges directly to my CRM.</p>
+                    <span className="dash-card-link">Generate Brief <ArrowRight size={14} /></span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        )}
+
+        {currentPage === 'services' && (
+          <div className="page-transition-fade" style={{ paddingTop: '8rem', paddingBottom: '6rem' }}>
+            {/* FREELANCE SERVICES SECTION */}
+            <section id="services" style={{ paddingBottom: '2rem' }}>
+              <div className="container">
+                <div className="section-header">
+                  <span className="section-tag">AI & Backend Services</span>
+                  <h2 className="section-title">How I Help Startups & Businesses</h2>
+                </div>
+
+                <div className="services-grid">
+                  {SERVICES_DATA.map((srv, idx) => (
+                    <div className="service-card glass-card" key={idx}>
+                      <div className="service-icon-wrapper">
+                        {srv.icon}
+                      </div>
+                      <h3 className="service-title">{srv.title}</h3>
+                      <p className="service-desc">{srv.desc}</p>
+                      <ul className="service-bullets">
+                        {srv.bullets.map((bullet, bidx) => (
+                          <li key={bidx}>{bullet}</li>
+                        ))}
+                      </ul>
+                    </div>
                   ))}
                 </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* EDUCATION & ACHIEVEMENTS GRIDS (DUAL TIMELINE) */}
-      <section id="journey" className="experience-section">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">Academic & Certifications</span>
-            <h2 className="section-title">Education & Credentials</h2>
-          </div>
-
-          <div className="about-grid">
-            {/* EDUCATION TIMELINE */}
-            <div className="glass-panel" style={{ padding: '2rem', borderRadius: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
-                <BookOpen size={24} className="text-gradient-cyan" />
-                <h3 className="card-heading" style={{ margin: 0 }}>Education</h3>
               </div>
-              <div className="timeline-container" style={{ margin: 0, maxWidth: '100%' }}>
-                <div className="timeline-line" style={{ left: '21px' }}></div>
-                
-                {EDUCATION_DATA.map((edu, index) => (
-                  <div className="timeline-item" key={index} style={{ paddingLeft: '50px', marginBottom: '2rem' }}>
-                    <div className="timeline-dot" style={{ left: '6px', width: '28px', height: '28px', borderColor: 'var(--color-secondary)' }}>
-                      <BookOpen size={12} />
+            </section>
+
+            {/* FREELANCE BLUEPRINT SECTION */}
+            <section id="blueprint" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
+              <div className="container">
+                <div className="section-header">
+                  <span className="section-tag">My Framework</span>
+                  <h2 className="section-title">Collaborative Agent & API Blueprint</h2>
+                </div>
+                <div className="process-container glass-panel" style={{ borderRadius: '16px' }}>
+                  {PROCESS_STEPS.map((step, idx) => (
+                    <div className="process-step" key={idx}>
+                      <div className="step-num">{step.step}</div>
+                      <h4 className="process-step-title">{step.title}</h4>
+                      <p className="process-step-desc">{step.desc}</p>
                     </div>
-                    <div className="timeline-content glass-card" style={{ padding: '1.25rem' }}>
-                      <span className="timeline-period">{edu.period}</span>
-                      <h4 className="timeline-role" style={{ fontSize: '1.1rem' }}>{edu.degree}</h4>
-                      <h5 className="timeline-company" style={{ fontSize: '0.9rem' }}>{edu.institution}</h5>
-                      <p className="timeline-desc" style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: 'var(--color-secondary)' }}>{edu.details}</p>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* CREATIVE PARTNERSHIP SECTION (ZENOS BISHT) */}
+            <section id="collaboration" className="about-section" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
+              <div className="container">
+                <div className="section-header">
+                  <span className="section-tag">Design Partner</span>
+                  <h2 className="section-title">Design & Development Synergy</h2>
+                </div>
+
+                <div className="about-grid">
+                  <div className="about-bio-card glass-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <div className="bio-icon-wrapper">
+                      <Workflow size={32} className="bio-icon" />
+                    </div>
+                    <h3 className="card-heading">Duo Agency Capability</h3>
+                    <p className="bio-paragraph">
+                      Startups often struggle with the friction between visual UI designers and software backend engineers. We eliminate that gap completely.
+                    </p>
+                    <p className="bio-paragraph">
+                      By teaming up directly with a highly skilled graphic designer, we deliver a unified pipeline: Zenos creates stunning branding, layouts, and assets, which I directly transition into clean, optimized React interfaces and Django REST backend code.
+                    </p>
+                  </div>
+
+                  <div className="about-bio-card glass-card">
+                    <div className="bio-icon-wrapper" style={{ borderColor: 'var(--border-cyan-glow)', background: 'rgba(6, 182, 212, 0.1)' }}>
+                      <Palette size={32} className="bio-icon" style={{ color: 'var(--color-secondary)' }} />
+                    </div>
+                    <h3 className="card-heading">{PARTNER_DATA.name}</h3>
+                    <h4 className="timeline-company" style={{ marginTop: '-0.75rem', marginBottom: '1rem', color: 'var(--color-secondary)' }}>{PARTNER_DATA.role}</h4>
+                    <p className="bio-paragraph" style={{ fontSize: '0.95rem' }}>
+                      {PARTNER_DATA.description}
+                    </p>
+                    <div className="about-details" style={{ marginTop: '1.5rem' }}>
+                      <div className="brief-pills-container" style={{ marginBottom: '1.5rem' }}>
+                        {PARTNER_DATA.skills.map((skill, idx) => (
+                          <span className="tech-badge" key={idx} style={{ padding: '0.35rem 0.75rem', borderRadius: '12px' }}>{skill}</span>
+                        ))}
+                      </div>
+                      <a 
+                        href={PARTNER_DATA.behance} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="btn btn-secondary"
+                        style={{ gap: '0.5rem', width: 'fit-content' }}
+                      >
+                        Explore Behance Portfolio <ExternalLink size={16} />
+                      </a>
                     </div>
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
+            </section>
+          </div>
+        )}
 
-            {/* ACHIEVEMENTS TIMELINE */}
-            <div className="glass-panel" style={{ padding: '2rem', borderRadius: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
-                <Award size={24} className="text-gradient" />
-                <h3 className="card-heading" style={{ margin: 0 }}>Achievements & Certificates</h3>
+        {currentPage === 'projects' && (
+          <div className="page-transition-fade" style={{ paddingTop: '8rem', paddingBottom: '6rem' }}>
+            {/* PROJECTS SECTION */}
+            <section id="projects" className="projects-section">
+              <div className="container">
+                <div className="section-header">
+                  <span className="section-tag">Portfolio</span>
+                  <h2 className="section-title">My Projects & Proof of Work</h2>
+                </div>
+
+                <div className="project-filters">
+                  <button 
+                    className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
+                    onClick={() => setActiveFilter('all')}
+                  >
+                    All Projects
+                  </button>
+                  <button 
+                    className={`filter-btn ${activeFilter === 'ai' ? 'active' : ''}`}
+                    onClick={() => setActiveFilter('ai')}
+                  >
+                    AI Agents & ML
+                  </button>
+                  <button 
+                    className={`filter-btn ${activeFilter === 'fullstack' ? 'active' : ''}`}
+                    onClick={() => setActiveFilter('fullstack')}
+                  >
+                    Full Stack
+                  </button>
+                  <button 
+                    className={`filter-btn ${activeFilter === 'backend' ? 'active' : ''}`}
+                    onClick={() => setActiveFilter('backend')}
+                  >
+                    Data Science
+                  </button>
+                </div>
+
+                <div className="projects-grid">
+                  {filteredProjects.map((project) => (
+                    <article className="project-card glass-card" key={project.id}>
+                      <div className="project-header">
+                        <span className="project-tag-badge">
+                          {project.category === 'ai' ? 'AI Agents' : project.category === 'fullstack' ? 'Full Stack' : 'Data & Backend'}
+                        </span>
+                        <div className="project-links">
+                          <a href={project.github} target="_blank" rel="noopener noreferrer" className="proj-link" aria-label="GitHub Repository">
+                            <GithubIcon size={20} />
+                          </a>
+                          <a href={project.live} target="_blank" rel="noopener noreferrer" className="proj-link" aria-label="Live Demo">
+                            <ExternalLink size={20} />
+                          </a>
+                        </div>
+                      </div>
+                      <h3 className="project-title">{project.title}</h3>
+                      <p className="project-desc">{project.description}</p>
+                      <div className="project-tech-stack">
+                        {project.tech.map((t, idx) => (
+                          <span className="tech-badge" key={idx}>{t}</span>
+                        ))}
+                      </div>
+                    </article>
+                  ))}
+                </div>
               </div>
-              <div className="timeline-container" style={{ margin: 0, maxWidth: '100%' }}>
-                <div className="timeline-line" style={{ left: '21px' }}></div>
-                
-                {ACHIEVEMENTS_DATA.map((ach, index) => (
-                  <div className="timeline-item" key={index} style={{ paddingLeft: '50px', marginBottom: '2rem' }}>
-                    <div className="timeline-dot" style={{ left: '6px', width: '28px', height: '28px' }}>
-                      <Award size={12} />
+            </section>
+          </div>
+        )}
+
+        {currentPage === 'journey' && (
+          <div className="page-transition-fade" style={{ paddingTop: '8rem', paddingBottom: '6rem' }}>
+            {/* SKILLS SECTION */}
+            <section className="about-section" style={{ paddingBottom: '3rem' }}>
+              <div className="container">
+                <div className="section-header">
+                  <span className="section-tag">Technical Profile</span>
+                  <h2 className="section-title">My Background & Core Skills</h2>
+                </div>
+                <div className="skills-card glass-card" style={{ maxWidth: '800px', margin: '0 auto' }}>
+                  <h3 className="card-heading">Expertise Matrix</h3>
+                  <div className="skills-list">
+                    {SKILLS_DATA.map((skill, index) => (
+                      <div className="skill-item" key={index}>
+                        <div className="skill-info">
+                          <span className="skill-name-icon">
+                            {skill.icon}
+                            <span className="skill-name">{skill.name}</span>
+                          </span>
+                          <span className="skill-percentage">{skill.level}%</span>
+                        </div>
+                        <div className="skill-bar-bg">
+                          <div 
+                            className="skill-bar-fill" 
+                            style={{ width: `${skill.level}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* EDUCATION & ACHIEVEMENTS GRIDS (DUAL TIMELINE) */}
+            <section id="journey" className="experience-section">
+              <div className="container">
+                <div className="section-header">
+                  <span className="section-tag">Academic & Certifications</span>
+                  <h2 className="section-title">Education & Credentials</h2>
+                </div>
+
+                <div className="about-grid">
+                  {/* EDUCATION TIMELINE */}
+                  <div className="glass-panel" style={{ padding: '2rem', borderRadius: '16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
+                      <BookOpen size={24} className="text-gradient-cyan" />
+                      <h3 className="card-heading" style={{ margin: 0 }}>Education</h3>
                     </div>
-                    <div className="timeline-content glass-card" style={{ padding: '1.25rem' }}>
-                      <span className="timeline-period" style={{ color: 'var(--color-primary)' }}>{ach.period}</span>
-                      <h4 className="timeline-role" style={{ fontSize: '1.1rem' }}>{ach.title}</h4>
-                      <h5 className="timeline-company" style={{ fontSize: '0.9rem' }}>{ach.issuer}</h5>
-                      <p className="timeline-desc" style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>{ach.description}</p>
-                      {ach.link && (
-                        <a 
-                          href={ach.link} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          style={{ 
-                            display: 'inline-flex', 
-                            alignItems: 'center', 
-                            gap: '4px', 
-                            marginTop: '0.75rem', 
-                            fontSize: '0.85rem', 
-                            color: 'var(--color-secondary)', 
-                            textDecoration: 'none',
-                            fontWeight: '500'
-                          }}
-                          className="cert-link"
-                        >
-                          View Credentials <ExternalLink size={12} />
-                        </a>
-                      )}
+                    <div className="timeline-container" style={{ margin: 0, maxWidth: '100%' }}>
+                      <div className="timeline-line" style={{ left: '21px' }}></div>
+                      
+                      {EDUCATION_DATA.map((edu, index) => (
+                        <div className="timeline-item" key={index} style={{ paddingLeft: '50px', marginBottom: '2rem' }}>
+                          <div className="timeline-dot" style={{ left: '6px', width: '28px', height: '28px', borderColor: 'var(--color-secondary)' }}>
+                            <BookOpen size={12} />
+                          </div>
+                          <div className="timeline-content glass-card" style={{ padding: '1.25rem' }}>
+                            <span className="timeline-period">{edu.period}</span>
+                            <h4 className="timeline-role" style={{ fontSize: '1.1rem' }}>{edu.degree}</h4>
+                            <h5 className="timeline-company" style={{ fontSize: '0.9rem' }}>{edu.institution}</h5>
+                            <p className="timeline-desc" style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: 'var(--color-secondary)' }}>{edu.details}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* ACHIEVEMENTS TIMELINE */}
+                  <div className="glass-panel" style={{ padding: '2rem', borderRadius: '16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
+                      <Award size={24} className="text-gradient" />
+                      <h3 className="card-heading" style={{ margin: 0 }}>Achievements & Certificates</h3>
+                    </div>
+                    <div className="timeline-container" style={{ margin: 0, maxWidth: '100%' }}>
+                      <div className="timeline-line" style={{ left: '21px' }}></div>
+                      
+                      {ACHIEVEMENTS_DATA.map((ach, index) => (
+                        <div className="timeline-item" key={index} style={{ paddingLeft: '50px', marginBottom: '2rem' }}>
+                          <div className="timeline-dot" style={{ left: '6px', width: '28px', height: '28px' }}>
+                            <Award size={12} />
+                          </div>
+                          <div className="timeline-content glass-card" style={{ padding: '1.25rem' }}>
+                            <span className="timeline-period" style={{ color: 'var(--color-primary)' }}>{ach.period}</span>
+                            <h4 className="timeline-role" style={{ fontSize: '1.1rem' }}>{ach.title}</h4>
+                            <h5 className="timeline-company" style={{ fontSize: '0.9rem' }}>{ach.issuer}</h5>
+                            <p className="timeline-desc" style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>{ach.description}</p>
+                            {ach.link && (
+                              <a 
+                                href={ach.link} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                style={{ 
+                                  display: 'inline-flex', 
+                                  alignItems: 'center', 
+                                  gap: '4px', 
+                                  marginTop: '0.75rem', 
+                                  fontSize: '0.85rem', 
+                                  color: 'var(--color-secondary)', 
+                                  textDecoration: 'none',
+                                  fontWeight: '500'
+                                }}
+                                className="cert-link"
+                              >
+                                View Credentials <ExternalLink size={12} />
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        )}
+
+        {currentPage === 'contact' && (
+          <div className="page-transition-fade" style={{ paddingTop: '8rem', paddingBottom: '6rem' }}>
+            {/* CONTACT ME SECTION / PROJECT BRIEF GENERATOR */}
+            <section id="contact" className="contact-section">
+              <div className="container">
+                <div className="section-header">
+                  <span className="section-tag">Let's Work Together</span>
+                  <h2 className="section-title">Start Your Project Brief</h2>
+                </div>
+
+                <div className="contact-grid">
+                  <div className="contact-info-card glass-card">
+                    <h3 className="card-heading">Let's Connect</h3>
+                    <p className="contact-subtext">
+                      Fill out the project brief to request AI Agents, backend development, design wireframes, or full stack systems. I will receive your details directly in my Django CRM dashboard.
+                    </p>
+                    
+                    <div className="contact-methods">
+                      <div className="method-item">
+                        <div className="method-icon-box">
+                          <Mail size={20} />
+                        </div>
+                        <div className="method-details">
+                          <span className="method-label">Email Me</span>
+                          <a href="mailto:Deepanshugautam9899@gmail.com" className="method-val">Deepanshugautam9899@gmail.com</a>
+                        </div>
+                      </div>
+
+                      <div className="method-item">
+                        <div className="method-icon-box">
+                          <Phone size={20} />
+                        </div>
+                        <div className="method-details">
+                          <span className="method-label">Call / WhatsApp</span>
+                          <span className="method-val">+91 8882440354</span>
+                        </div>
+                      </div>
+
+                      <div className="method-item">
+                        <div className="method-icon-box">
+                          <MapPin size={20} />
+                        </div>
+                        <div className="method-details">
+                          <span className="method-label">Location</span>
+                          <span className="method-val">Ghaziabad, Delhi NCR, India</span>
+                        </div>
+                      </div>
                     </div>
 
+                    <div className="contact-socials">
+                      <a href="https://github.com/codewithdeepanshu" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="GitHub Link">
+                        <GithubIcon size={22} />
+                      </a>
+                      <a href="https://www.linkedin.com/in/deepanshu-gautam-9b1051240/" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="LinkedIn Link">
+                        <LinkedinIcon size={22} />
+                      </a>
+                    </div>
                   </div>
-                ))}
+
+                  {/* Direct Contact Form / Interactive Project Brief Generator */}
+                  <div className="contact-form-wrapper glass-panel">
+                    <h3 className="card-heading">Define Your Project</h3>
+                    
+                    {formStatus.success && (
+                      <div className="form-alert alert-success">
+                        <CheckCircle className="alert-icon" size={20} />
+                        <div>
+                          <strong>Brief Submitted!</strong> Your project parameters have been securely saved to my Django backend database. I will contact you shortly to review.
+                        </div>
+                      </div>
+                    )}
+
+                    {formStatus.error && (
+                      <div className="form-alert alert-error">
+                        <AlertCircle className="alert-icon" size={20} />
+                        <div>
+                          <strong>Error:</strong> {formStatus.error}
+                        </div>
+                      </div>
+                    )}
+
+                    <form onSubmit={handleFormSubmit} className="contact-form">
+                      
+                      {/* INTERACTIVE COMPONENT: Service Checklist */}
+                      <div>
+                        <span className="brief-label">What services do you require?</span>
+                        <div className="brief-pills-container">
+                          {BRIEF_SERVICES.map((service, sidx) => {
+                            const isActive = selectedServices.includes(service);
+                            return (
+                              <button
+                                type="button"
+                                key={sidx}
+                                className={`brief-pill ${isActive ? 'active' : ''}`}
+                                onClick={() => toggleServiceSelection(service)}
+                              >
+                                {isActive && <Check size={12} />}
+                                {service}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* INTERACTIVE COMPONENT: Budget Selector */}
+                      <div>
+                        <span className="brief-label">Estimated Project Budget</span>
+                        <div className="budget-container">
+                          {BRIEF_BUDGETS.map((budget, bidx) => {
+                            const isActive = selectedBudget === budget;
+                            return (
+                              <button
+                                type="button"
+                                key={bidx}
+                                className={`budget-btn ${isActive ? 'active' : ''}`}
+                                onClick={() => setSelectedBudget(budget)}
+                              >
+                                {budget}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label htmlFor="name">Full Name <span className="required-star">*</span></label>
+                          <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            placeholder="John Doe"
+                            value={formData.name}
+                            onChange={handleInputChange}
+                            required 
+                            disabled={formStatus.submitting}
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label htmlFor="email">Email Address <span className="required-star">*</span></label>
+                          <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="john@example.com"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            required 
+                            disabled={formStatus.submitting}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="subject">Subject</label>
+                        <input 
+                          type="text" 
+                          id="subject" 
+                          name="subject" 
+                          placeholder="Project Inquiry"
+                          value={formData.subject}
+                          onChange={handleInputChange}
+                          disabled={formStatus.submitting}
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="message">Project Description <span className="required-star">*</span></label>
+                        <textarea 
+                          id="message" 
+                          name="message" 
+                          rows="4" 
+                          placeholder="Briefly explain what you need to build, your timeline, or any specific requirements..."
+                          value={formData.message}
+                          onChange={handleInputChange}
+                          required
+                          disabled={formStatus.submitting}
+                        ></textarea>
+                      </div>
+
+                      <button 
+                        type="submit" 
+                        className="btn btn-primary submit-btn"
+                        disabled={formStatus.submitting}
+                      >
+                        {formStatus.submitting ? (
+                          <>Submitting Brief...</>
+                        ) : (
+                          <>
+                            Submit Project Brief <Send size={16} />
+                          </>
+                        )}
+                      </button>
+                    </form>
+                  </div>
+                </div>
               </div>
-            </div>
+            </section>
           </div>
-        </div>
-      </section>
-
-      {/* CONTACT ME SECTION / PROJECT BRIEF GENERATOR */}
-      <section id="contact" className="contact-section">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">Let's Work Together</span>
-            <h2 className="section-title">Start Your Project Brief</h2>
-          </div>
-
-          <div className="contact-grid">
-            <div className="contact-info-card glass-card">
-              <h3 className="card-heading">Let's Connect</h3>
-              <p className="contact-subtext">
-                Fill out the project brief to request AI Agents, backend development, design wireframes, or full stack systems. I will receive your details directly in my Django CRM dashboard.
-              </p>
-              
-              <div className="contact-methods">
-                <div className="method-item">
-                  <div className="method-icon-box">
-                    <Mail size={20} />
-                  </div>
-                  <div className="method-details">
-                    <span className="method-label">Email Me</span>
-                    <a href="mailto:Deepanshugautam9899@gmail.com" className="method-val">Deepanshugautam9899@gmail.com</a>
-                  </div>
-                </div>
-
-                <div className="method-item">
-                  <div className="method-icon-box">
-                    <Phone size={20} />
-                  </div>
-                  <div className="method-details">
-                    <span className="method-label">Call / WhatsApp</span>
-                    <span className="method-val">+91 8882440354</span>
-                  </div>
-                </div>
-
-                <div className="method-item">
-                  <div className="method-icon-box">
-                    <MapPin size={20} />
-                  </div>
-                  <div className="method-details">
-                    <span className="method-label">Location</span>
-                    <span className="method-val">Ghaziabad, Delhi NCR, India</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="contact-socials">
-                <a href="https://github.com/codewithdeepanshu" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="GitHub Link">
-                  <GithubIcon size={22} />
-                </a>
-                <a href="https://www.linkedin.com/in/deepanshu-gautam-9b1051240/" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="LinkedIn Link">
-                  <LinkedinIcon size={22} />
-                </a>
-              </div>
-
-            </div>
-
-            {/* Direct Contact Form / Interactive Project Brief Generator */}
-            <div className="contact-form-wrapper glass-panel">
-              <h3 className="card-heading">Define Your Project</h3>
-              
-              {formStatus.success && (
-                <div className="form-alert alert-success">
-                  <CheckCircle className="alert-icon" size={20} />
-                  <div>
-                    <strong>Brief Submitted!</strong> Your project parameters have been securely saved to my Django backend database. I will contact you shortly to review.
-                  </div>
-                </div>
-              )}
-
-              {formStatus.error && (
-                <div className="form-alert alert-error">
-                  <AlertCircle className="alert-icon" size={20} />
-                  <div>
-                    <strong>Error:</strong> {formStatus.error}
-                  </div>
-                </div>
-              )}
-
-              <form onSubmit={handleFormSubmit} className="contact-form">
-                
-                {/* INTERACTIVE COMPONENT: Service Checklist */}
-                <div>
-                  <span className="brief-label">What services do you require?</span>
-                  <div className="brief-pills-container">
-                    {BRIEF_SERVICES.map((service, sidx) => {
-                      const isActive = selectedServices.includes(service);
-                      return (
-                        <button
-                          type="button"
-                          key={sidx}
-                          className={`brief-pill ${isActive ? 'active' : ''}`}
-                          onClick={() => toggleServiceSelection(service)}
-                        >
-                          {isActive && <Check size={12} />}
-                          {service}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* INTERACTIVE COMPONENT: Budget Selector */}
-                <div>
-                  <span className="brief-label">Estimated Project Budget</span>
-                  <div className="budget-container">
-                    {BRIEF_BUDGETS.map((budget, bidx) => {
-                      const isActive = selectedBudget === budget;
-                      return (
-                        <button
-                          type="button"
-                          key={bidx}
-                          className={`budget-btn ${isActive ? 'active' : ''}`}
-                          onClick={() => setSelectedBudget(budget)}
-                        >
-                          {budget}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div className="form-row">
-                  <div className="form-group">
-                    <label htmlFor="name">Full Name <span className="required-star">*</span></label>
-                    <input 
-                      type="text" 
-                      id="name" 
-                      name="name" 
-                      placeholder="John Doe"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required 
-                      disabled={formStatus.submitting}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="email">Email Address <span className="required-star">*</span></label>
-                    <input 
-                      type="email" 
-                      id="email" 
-                      name="email" 
-                      placeholder="john@example.com"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required 
-                      disabled={formStatus.submitting}
-                    />
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="subject">Subject</label>
-                  <input 
-                    type="text" 
-                    id="subject" 
-                    name="subject" 
-                    placeholder="Project Inquiry"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    disabled={formStatus.submitting}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="message">Project Description <span className="required-star">*</span></label>
-                  <textarea 
-                    id="message" 
-                    name="message" 
-                    rows="4" 
-                    placeholder="Briefly explain what you need to build, your timeline, or any specific requirements..."
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    required
-                    disabled={formStatus.submitting}
-                  ></textarea>
-                </div>
-
-                <button 
-                  type="submit" 
-                  className="btn btn-primary submit-btn"
-                  disabled={formStatus.submitting}
-                >
-                  {formStatus.submitting ? (
-                    <>Submitting Brief...</>
-                  ) : (
-                    <>
-                      Submit Project Brief <Send size={16} />
-                    </>
-                  )}
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
+        )}
+      </main>
 
       {/* FOOTER */}
       <footer className="footer">
